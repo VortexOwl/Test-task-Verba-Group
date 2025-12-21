@@ -219,6 +219,7 @@ def page_filter_no_text(number_page:str) -> dict:
         f"&{flag_rating}" \
         f"&priceU={price_start}00%3B{price_finish}00" \
         f"&{code_RF}"
+    log_debug(message=f'Product map page {number_page} without a text request XHR URL: {xhr_url}')
     driver_browser.get(url=xhr_url)
     timeout_web_request()
     str_response_json = wait_find_element(driver=driver_browser, by=By.XPATH, value=".//pre").get_attribute('textContent')
