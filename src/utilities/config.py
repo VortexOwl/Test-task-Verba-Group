@@ -1,1 +1,0 @@
-is_console_debug = False

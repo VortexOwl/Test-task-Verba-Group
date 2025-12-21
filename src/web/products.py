@@ -2,11 +2,8 @@
 # Embedded libraries                                                          #
 # ----------------------------------------------------------------------------#
 import json
-#from json import dump, load, loads
 import random
-#from random import randint
 import time
-#from time import sleep
 from os.path import isfile
 
 # ----------------------------------------------------------------------------#
