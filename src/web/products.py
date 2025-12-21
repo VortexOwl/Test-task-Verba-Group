@@ -1,9 +1,9 @@
 # ----------------------------------------------------------------------------#
 # Embedded libraries                                                          #
 # ----------------------------------------------------------------------------#
-import json
-import random
-import time
+from json import dump as json_dump, load as json_load, loads as json_loads
+from random import randint
+from time import sleep
 from os.path import isfile
 
 # ----------------------------------------------------------------------------#
@@ -47,21 +47,21 @@ def webdriver_create() -> None:
 
 
 def timeout_web_request(beginning:int=10, end:int=30) -> None:
-    time.sleep(random.randint(beginning, end))
+    sleep(randint(beginning, end))
 
 
 def write_cookies() -> None:
     cookies = driver_browser.get_cookies()
     creating_necessary_folders(path='data')
     with open(file=f'data/cookies.json', mode='w') as file:
-        json.dump(ocookies, file)
+        json_dump(cookies, file)
 
 
 def read_cookies() -> None:
     creating_necessary_folders(path='data')
     if isfile(path='data/cookies.json'):
         with open(file='data/cookies.json', mode='r') as file:
-            cookies = json.load(file)
+            cookies = json_load(file)
             for cookie in cookies:
                 driver_browser.add_cookie(cookie_dict=cookie)
     else:
@@ -97,18 +97,18 @@ def get_json_products_page(text_request:str, number_page:str) -> dict:
     driver_browser.get(url=xhr_url)
     timeout_web_request()
     str_response_json = wait_find_element(driver=driver_browser, by=By.XPATH, value=".//pre").get_attribute('textContent')
-    response_json = json.loads(str_response_json)
+    response_json = json_loads(str_response_json)
     return response_json
 
 
 def get_json_product_page(product_id:str) -> dict:
-    random_number = random.randint(1, 4)
+    random_number = randint(1, 4)
     xhr_url = f"https://rst-basket-cdn-0{random_number}bl.geobasket.ru/vol{product_id[:-5]}/part{product_id[:-3]}/{product_id}/info/ru/card.json" 
     log_debug(message=f'Page ID {product_id} XHR URL: {xhr_url}')
     driver_browser.get(url=xhr_url)
     timeout_web_request()
     str_response_json = wait_find_element(driver=driver_browser, by=By.XPATH, value=".//pre").get_attribute('textContent')
-    response_json = json.loads(str_response_json)
+    response_json = json_loads(str_response_json)
     return response_json
 
 
@@ -213,8 +213,10 @@ def page_filter_no_text(number_page:str) -> dict:
         "&ab_testing=false" \
         "&ab_vis_testid=fn_ex" \
         "&curr=rub&dest=12358062" \
-        f"&lang=ru&page={number_page}" \
-        "&query=0&resultset=catalog" \
+        "&lang=ru&" \
+        f"page={number_page}" \
+        "&query=0" \
+        "&resultset=catalog" \
         "&suppressSpellcheck=false" \
         f"&{flag_rating}" \
         f"&priceU={price_start}00%3B{price_finish}00" \
@@ -223,7 +225,7 @@ def page_filter_no_text(number_page:str) -> dict:
     driver_browser.get(url=xhr_url)
     timeout_web_request()
     str_response_json = wait_find_element(driver=driver_browser, by=By.XPATH, value=".//pre").get_attribute('textContent')
-    response_json = json.loads(str_response_json)
+    response_json = json_loads(str_response_json)
     return response_json
 
 

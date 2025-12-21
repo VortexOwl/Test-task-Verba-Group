@@ -13,15 +13,15 @@ from src.utilities.utilities import creating_necessary_folders
 # ----------------------------------------------------------------------------#
 from openpyxl.utils import get_column_letter
 from openpyxl import Workbook
-import pandas as pd
+from pandas import DataFrame, Series, ExcelWriter as pd_ExcelWriter, concat as pd_concat
 
 
-def update_length_column_names(df_products:pd.DataFrame, file_path:str, sheet_name:str='Quest 1') -> None:
+def update_length_column_names(df_products:DataFrame, file_path:str, sheet_name:str='Quest 1') -> None:
     if not isfile(path=file_path):
         workbook = Workbook()
         workbook.active.title = 'Quest 1'
         workbook.save(filename=file_path)
-    with pd.ExcelWriter(path=file_path, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
+    with pd_ExcelWriter(path=file_path, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
         df_products.to_excel(excel_writer=writer, sheet_name=sheet_name, index=False)
         worksheet = writer.sheets[sheet_name]
         for idx, col in enumerate(df_products.columns):
@@ -71,9 +71,9 @@ def create_table(list_products:dict, table_name:str='WB products', sheet_name:st
             name, value = characteristic.popitem()
             str_characteristics += f'{name}: {value}\n'
         list_product.append(str_characteristics[:-1])
-        row_series = pd.Series(data=list_product, index=col_names)
+        row_series = Series(data=list_product, index=col_names)
         list_series.append(row_series)
-    df_products = pd.concat(objs=list_series, axis=1)
+    df_products = pd_concat(objs=list_series, axis=1)
     df_products = df_products.T
     creating_necessary_folders('docs')
     update_length_column_names(df_products=df_products, file_path=f"docs/{table_name}.xlsx", sheet_name=sheet_name)
