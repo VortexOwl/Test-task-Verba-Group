@@ -238,8 +238,6 @@ def start_web_quest_1(text_request:str='пальто из натуральной
     while is_next_page:
         json_products_page = get_json_products_page(text_request=text_request, number_page=str(number_page))
         list_products = get_products_page(json_products_page=json_products_page, list_products=list_products)
-        if number_page == 3:
-            break
         number_page += 1
         is_next_page = go_product_card_page(text_request=text_request, number_page=str(number_page))
     log_info(message='Выключение вебдрайвера.')
@@ -261,8 +259,6 @@ def start_web_quest_2() -> list:
         if not json_products_page['products']:
             break
         list_products = get_products_page(json_products_page=json_products_page, list_products=list_products)
-        if number_page == 3:
-            break
         number_page += 1
     log_info(message='Выключение вебдрайвера.')
     driver_browser.quit()
