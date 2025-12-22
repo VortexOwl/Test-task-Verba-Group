@@ -4,6 +4,7 @@
 ### Установка зависимостей
     pip install -r requirements.txt
 
+    Для работы скрипта требуется установленный на компьютере браузер [Chrome](https://www.google.com/intl/ru_ru/chrome/).
 ### Активация скрипта из папки проекта
     python src/app.py
 
