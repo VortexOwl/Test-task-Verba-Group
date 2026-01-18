@@ -6,7 +6,7 @@ from logging import basicConfig, getLogger, Formatter, Logger, FileHandler, Stre
 # ----------------------------------------------------------------------------#
 # Project modules                                                             #
 # ----------------------------------------------------------------------------#
-from src.logs.config import LOG_LEVEL
+from src.logs.config import LOG_LEVEL, is_console_handler
 from src.utilities.utilities import creating_necessary_folders
 
 
@@ -16,11 +16,12 @@ def create_main_logger(formatter: Formatter, log_level:int) -> Logger:
     file_handler = FileHandler('logs/logs.log', mode='a', encoding='utf-8')
     file_handler.setLevel(log_level)
     file_handler.setFormatter(formatter)
-    console_handler = StreamHandler()
-    console_handler.setLevel(log_level)
-    console_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
-    logger.addHandler(console_handler)
+    if is_console_handler:
+        console_handler = StreamHandler()
+        console_handler.setLevel(log_level)
+        console_handler.setFormatter(formatter)
+        logger.addHandler(console_handler)
     return logger
 
 
